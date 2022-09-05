@@ -6,4 +6,7 @@
   html {
     font-family: Poppins, system-ui, sans-serif;
   }
+  h1 {
+    font-size: 3rem;
+  }
 }

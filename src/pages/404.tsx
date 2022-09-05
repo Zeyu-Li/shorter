@@ -6,11 +6,11 @@ import Title from "../components/common/Title";
 const Custom404: NextPage = () => {
   return (
     <>
-      <Title title="Page Stolen 😳" />
-      <main>
-        <div className="text-center justify-center max-w-4xl text-4xl">
-          <h1 className="my-16">Page not found ¯\(°_o)/¯</h1>
-          <LinkButton text={"Back to Home"} />
+      <Title title="Page expired or invalid ☠️" />
+      <main className="flex align-middle min-h-screen">
+        <div className="text-center justify-center max-w-4xl m-auto text-4xl">
+          <h1 className="mb-16">Page expired or invalid ¯\(°_o)/¯</h1>
+          <LinkButton text={"Create a new link"} />
         </div>
       </main>
     </>
