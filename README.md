@@ -1,14 +1,15 @@
-# T3 Boilerplate App
+# Shorter
+
+A URL shortener
 
 Created using `npx create-t3-app@latest`
 
 ## Next Steps
 
-* change constants in `src\components\constants\constants.tsx` for front end defaults
-* change .env.local to your personal settings
-* Remove `src\components\common\LinkButton.tsx` and the reference in index if you want to get rid of boilerplate code
-* Hit the ground running 🏃‍♂️
-
+- change constants in `src\components\constants\constants.tsx` for front end defaults
+- change .env.local to your personal settings
+- Remove `src\components\common\LinkButton.tsx` and the reference in index if you want to get rid of boilerplate code
+- Hit the ground running 🏃‍♂️
 
 ## Why are there `.js` files in here?
 

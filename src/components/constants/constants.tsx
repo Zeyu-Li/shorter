@@ -1,12 +1,12 @@
-const DEFAULT_TITLE = "T3 Template";
-const DEFAULT_DESCRIPTION = "T3 Template";
+const DEFAULT_TITLE = "Shorter";
+const DEFAULT_DESCRIPTION = "A URL Shortener for free!";
 
 const CONSTANTS = {
   DEFAULT_TITLE: DEFAULT_TITLE,
-  DEFAULT_AUTHOR: "Antarctic Solutions Inc.",
+  DEFAULT_AUTHOR: "Andrew Li",
   DEFAULT_DESCRIPTION: DEFAULT_DESCRIPTION,
-  DEFAULT_KEYWORDS: ["next", "T3", "boilerplate"],
-  DEFAULT_SITE_NAME: "T3 Template",
+  DEFAULT_KEYWORDS: ["url", "shortener", "url-shorten"],
+  DEFAULT_SITE_NAME: "Shorter",
   DEFAULT_BASE_URL: "",
   DEFAULT_PREVIEW_IMG: "",
   DEFAULT_TWITTER_TITLE: DEFAULT_TITLE,
