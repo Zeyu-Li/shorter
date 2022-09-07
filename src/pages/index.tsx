@@ -1,16 +1,54 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import React, { useState } from "react";
+import axios from "axios";
 import SubmitButton from "../components/common/SubmitButton";
 import Title from "../components/common/Title";
 
-const Home: NextPage = () => {
+function validURL(str: string): boolean {
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return !!pattern.test(str);
+}
+
+type Props = { host: string | null };
+
+interface PageProps {
+  host: null | string;
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => ({
+  props: { host: ctx.req.headers.referer || null },
+});
+
+const Home: NextPage<PageProps> = ({ host }) => {
   const [url, setURL] = useState("");
+  const [shortLink, setShortLink] = useState("");
   const submitForm = (e: React.MouseEvent<HTMLElement, MouseEvent>): void => {
     e.preventDefault();
-    if (!url) {
+    if (!validURL(url)) {
       alert("URL is not valid");
       return;
     }
+
+    axios
+      .post(`${host}/api/examples`)
+      .then((res) => {
+        console.log(res);
+        if (res?.data?.url) setShortLink(res.data.url);
+        else throw new Error("Data is of invalid shape");
+      })
+      .catch((err) => {
+        console.error(err);
+
+        alert("URL could not be created at this time");
+      });
   };
 
   return (
@@ -28,6 +66,11 @@ const Home: NextPage = () => {
             />
             <SubmitButton text={"Generate URL"} onClick={submitForm} />
           </form>
+          {shortLink ? (
+            <h3>
+              Created link at <a>{shortLink}</a>
+            </h3>
+          ) : null}
         </div>
       </main>
     </>

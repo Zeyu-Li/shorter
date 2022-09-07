@@ -10,7 +10,7 @@ interface Props {
 const SubmitButton: React.FC<Props> = ({ onClick, title, text }) => {
   return (
     <button
-      // type="submit"
+      type="submit"
       onClick={onClick}
       className="mb-8 text-3xl transition-all text-white bg-blue-800 rounded-full py-3.5 px-12 m-4 hover:bg-blue-600"
     >
