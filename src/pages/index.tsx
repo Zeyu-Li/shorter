@@ -38,7 +38,7 @@ const Home: NextPage<PageProps> = ({ host }) => {
     }
 
     axios
-      .post(`${host}/api/examples`)
+      .post(`${host}api/examples`)
       .then((res) => {
         console.log(res);
         if (res?.data?.url) setShortLink(res.data.url);

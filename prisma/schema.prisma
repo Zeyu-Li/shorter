@@ -62,3 +62,12 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+
+model Url {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    url       String?   
+    slug      String   @unique
+    @@index(slug)
+}
