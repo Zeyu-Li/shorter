@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import SubmitButton from "../components/common/SubmitButton";
 import Title from "../components/common/Title";
+import CONSTANTS from "../components/constants/constants";
 
 function validURL(str: string): boolean {
   var pattern = new RegExp(
@@ -17,19 +18,10 @@ function validURL(str: string): boolean {
   return !!pattern.test(str);
 }
 
-type Props = { host: string | null };
-
-interface PageProps {
-  host: null | string;
-}
-
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => ({
-  props: { host: ctx.req.headers.referer || null },
-});
-
-const Home: NextPage<PageProps> = ({ host }) => {
+const Home: NextPage = () => {
   const [url, setURL] = useState("");
   const [shortLink, setShortLink] = useState("");
+  const [copied, setCopied] = useState(false);
   const submitForm = (e: React.MouseEvent<HTMLElement, MouseEvent>): void => {
     e.preventDefault();
     if (!validURL(url)) {
@@ -38,10 +30,11 @@ const Home: NextPage<PageProps> = ({ host }) => {
     }
 
     axios
-      .post(`${host}api/examples`)
+      .post(`${CONSTANTS.DEFAULT_BASE_URL}api/create/create`, { url })
       .then((res) => {
         console.log(res);
-        if (res?.data?.url) setShortLink(res.data.url);
+        if (res?.data?.url)
+          setShortLink(`${CONSTANTS.DEFAULT_BASE_URL}api/${res.data.slug}`);
         else throw new Error("Data is of invalid shape");
       })
       .catch((err) => {
@@ -51,11 +44,21 @@ const Home: NextPage<PageProps> = ({ host }) => {
       });
   };
 
+  const copyToClipboard = (): void => {
+    setCopied(true);
+    navigator.clipboard.writeText(shortLink);
+  };
+
+  // autoclose alert after 3 seconds
+  setTimeout(() => {
+    setCopied(false);
+  }, 3000);
+
   return (
     <>
       <Title title="Shorter" />
       <main className="flex align-middle min-h-screen">
-        <div className="text-center justify-center max-w-4xl m-auto text-4xl">
+        <div className="text-center justify-center max-w-lg m-auto text-4xl">
           <h1 className="mb-8">URL Shortener</h1>
           <form>
             <input
@@ -68,11 +71,30 @@ const Home: NextPage<PageProps> = ({ host }) => {
           </form>
           {shortLink ? (
             <h3>
-              Created link at <a>{shortLink}</a>
+              Created link at{" "}
+              <a
+                className="text-blue-700 cursor-pointer underline hover:text-blue-500 transition"
+                title={shortLink}
+                onClick={() => copyToClipboard()}
+              >
+                {shortLink}
+              </a>
             </h3>
           ) : null}
         </div>
       </main>
+
+      {/* bottom toast to say copied to clipboard */}
+      {/* {copied ? ( */}
+      <div
+        className={`fixed bottom-0 right-0 m-4 transition`}
+        style={{ opacity: copied ? 100 : 0 }}
+      >
+        <div className="bg-gray-800 text-white font-bold rounded-lg border shadow-lg p-4">
+          Copied to clipboard!
+        </div>
+      </div>
+      {/* ) : null} */}
     </>
   );
 };

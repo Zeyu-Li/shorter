@@ -2,6 +2,8 @@
 
 A URL shortener
 
+Live @ [shorter.andrewli.site](https://shorter.andrewli.site/)
+
 Created using `npx create-t3-app@latest`
 
 ## Next Steps

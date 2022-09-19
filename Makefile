@@ -3,3 +3,6 @@ db:
 
 migrate:
 	npx prisma db push
+
+primsa:
+	npx prisma studio
