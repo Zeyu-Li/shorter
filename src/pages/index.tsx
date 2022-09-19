@@ -73,7 +73,7 @@ const Home: NextPage = () => {
             <h3>
               Created link at{" "}
               <a
-                className="text-blue-700 cursor-pointer underline hover:text-blue-500 transition"
+                className="text-blue-700 cursor-pointer underline hover:text-blue-500 transition break-words inline-block max-w-xl"
                 title={shortLink}
                 onClick={() => copyToClipboard()}
               >
