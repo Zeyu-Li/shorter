@@ -20,7 +20,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
       const createdUrl = await prisma.url.create({
         data: {
           url: req.body.url,
-          slug: randomBytes(8).toString("hex"),
+          slug: randomBytes(4).toString("hex"),
         },
       });
       res.status(200).json(createdUrl);
