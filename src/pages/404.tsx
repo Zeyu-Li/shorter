@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import Link from "next/link";
 import LinkButton from "../components/common/LinkButton";
 import Title from "../components/common/Title";
 
