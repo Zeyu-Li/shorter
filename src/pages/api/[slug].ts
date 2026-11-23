@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
+import { isShortenableUrl } from "../../utils/url";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { slug } = req.query;
@@ -18,7 +19,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       slug: slug as string,
     },
   });
-  if (url) {
+  // Never redirect to a stored non-http(s) target (e.g. `javascript:`), even if
+  // one was saved before the create endpoint validated its input.
+  if (url && isShortenableUrl(url.url)) {
     // cache
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "*");

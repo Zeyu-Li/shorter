@@ -1,9 +1,13 @@
 import type { GetServerSideProps, NextPage } from "next";
 import React, { useState } from "react";
-import axios from "axios";
 import SubmitButton from "../components/common/SubmitButton";
 import Title from "../components/common/Title";
 import CONSTANTS from "../components/constants/constants";
+
+interface ShortenedUrl {
+  url: string;
+  slug: string;
+}
 
 function validURL(str: string): boolean {
   const pattern = new RegExp(
@@ -29,12 +33,22 @@ const Home: NextPage = () => {
       return;
     }
 
-    axios
-      .post(`${CONSTANTS.DEFAULT_BASE_URL}api/create/create`, { url })
-      .then((res) => {
-        console.log(res);
-        if (res?.data?.url)
-          setShortLink(`${CONSTANTS.DEFAULT_BASE_URL}api/${res.data.slug}`);
+    // The API only accepts absolute http(s) URLs; default bare domains to https.
+    const absoluteUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+
+    fetch(`${CONSTANTS.DEFAULT_BASE_URL}api/create/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: absoluteUrl }),
+    })
+      .then((res: Response): Promise<Partial<ShortenedUrl>> => {
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+        return res.json();
+      })
+      .then((data: Partial<ShortenedUrl>) => {
+        console.log(data);
+        if (data?.url)
+          setShortLink(`${CONSTANTS.DEFAULT_BASE_URL}api/${data.slug}`);
         else throw new Error("Data is of invalid shape");
       })
       .catch((err) => {
